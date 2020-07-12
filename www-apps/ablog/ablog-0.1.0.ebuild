@@ -169,7 +169,7 @@ DESCRIPTION="ablog"
 # Double check the homepage as the cargo_metadata crate
 # does not provide this value so instead repository is used
 HOMEPAGE="homepage field in Cargo.toml inaccessible to cargo metadata"
-SRC_URI="https://github.com/manuelisimo/ablog.git $(cargo_crate_uris ${CRATES})"
+SRC_URI="https://github.com/manuelisimo/${PN}/archive/v${PV}.tar.gz $(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
 # License set may be more restrictive as OR is not respected
 # use cargo-license for a more accurate license picture
@@ -182,7 +182,7 @@ DEPEND=""
 RDEPEND=""
 
 src_install() {
-    default
-    newconf "${WORKDIR}/.env.sample" ablog
-    newinitd "${FILESDIR}/scripts/ablog.initd" ablog
+	cargo_src_install
+	newconfd "${WORKDIR}/${PN}-${PV}/.env.sample" ablog
+	newinitd "${FILESDIR}/ablog.initd" ablog
 }

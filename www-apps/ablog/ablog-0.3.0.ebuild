@@ -274,14 +274,16 @@ src_install() {
 	if [[ ! -e ${TLS_PRIVATE_KEY} ]]; then
 		mkdir -p ${TLS_PRIVATE_KEY%/*}
 		mkdir -p ${TLS_CERTIFICATE%/*}
+
 		openssl req \
-			-x509\
-			-newkey rsa:4096 \
-			-keyout ${TLS_PRIVATE_KEY} \
+			-x509 \
 			-out ${TLS_CERTIFICATE} \
-			-days 365 \
+			-keyout ${TLS_PRIVATE_KEY} \
+			-newkey rsa:2048 \
+			-nodes \
 			-sha256 \
-			-subj "/C=CN/ST=Fujian/L=Xiamen/O=TVlinux/OU=Org/CN=muro.lxd"
+			-subj '/CN=${HOST_NAME}' \
+			-extensions EXT -config <( printf "[dn]\nCN=${HOST_NAME}\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:${HOST_NAME}\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 	fi
 
 	# Create static dir if it does not exist

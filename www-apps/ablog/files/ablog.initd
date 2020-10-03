@@ -11,6 +11,6 @@ command_args=""
 command_background="true"
 pidfile="/run/${RC_SVCNAME}.pid"
 name="A blog Daemon"
-description="A blog is yey another blog app"
+description="A blog is yet another blog app"
 
 export TMPDIR="${TMPDIR:-/tmp}"

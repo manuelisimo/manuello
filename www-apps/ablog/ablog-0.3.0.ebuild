@@ -264,7 +264,7 @@ src_install() {
 	newinitd "${FILESDIR}/ablog.initd" ablog
 
 	# Create empty database if it does not exist
-	source /etc/conf.d/ablog
+	source "${WORKDIR}/${PN}-${PV}/.env.sample"
 	$file=${DATABASE_URL#file:}
 	if [[ ! -e $file ]]; then
 		mkdir -p ${file%/*}
@@ -272,14 +272,14 @@ src_install() {
 	fi
 
 	# Generate a self signed private cert
-	if [[ ! -e ${TLS_PRIVATE_KEY} ]]; then
-		mkdir -p ${TLS_PRIVATE_KEY%/*}
-		mkdir -p ${TLS_CERTIFICATE%/*}
+	if [[ ! -e ${ED}${TLS_PRIVATE_KEY} ]]; then
+		mkdir -p ${ED}${TLS_PRIVATE_KEY%/*}
+		mkdir -p ${ED}${TLS_CERTIFICATE%/*}
 
 		openssl req \
 			-x509 \
-			-out ${TLS_CERTIFICATE} \
-			-keyout ${TLS_PRIVATE_KEY} \
+			-out ${ED}${TLS_CERTIFICATE} \
+			-keyout ${ED}${TLS_PRIVATE_KEY} \
 			-newkey rsa:2048 \
 			-nodes \
 			-sha256 \
@@ -293,7 +293,7 @@ src_install() {
 	fi
 
 	# Create log dir
-	mkdir -p /var/log/${PN}
+	mkdir -p ${ED}/var/log/${PN}
 
 	# Copy static files
 	cp -r "${WORKDIR}/${PN}-${PV}" "${STATIC_DIR}"

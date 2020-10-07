@@ -3,14 +3,33 @@
 # Distributed under the terms of the GNU General Public License v2
 
 depend() {
-        need net
+        need
+        after net
 }
 
 command=/usr/bin/ablog
 command_args=""
 command_background="true"
+start_stop_daemon_args=" \
+        --stdout /var/log/${SVCNAME}/${SVCNAME}.log \
+        --stderr /var/log/${SVCNAME}/${SVCNAME}.err.log"
+
 pidfile="/run/${RC_SVCNAME}.pid"
 name="A blog Daemon"
 description="A blog is yet another blog app"
+
+
+ablog_vars=('DATABASE_URL'\
+        'HOST_NAME'\
+        'RUST_LOG'\
+        'STATIC_PATH'\
+        'STATIC_DIR'\
+        'TLS_PRIVATE_KEY'\
+        'TLS_CERTIFICATE')
+
+for i in "${ablog_vars[@]}"
+do
+    eval export $i=\$${i}
+done
 
 export TMPDIR="${TMPDIR:-/tmp}"

@@ -250,6 +250,7 @@ BDEPEND="dev-libs/openssl"
 
 DEPEND="
 	dev-lang/rust
+	dev-db/sqlite
 "
 
 RDEPEND="
@@ -263,7 +264,7 @@ src_install() {
 	newinitd "${FILESDIR}/ablog.initd" ablog
 
 	# Create empty database if it does not exist
-	source /etc/ablog
+	source /etc/conf.d/ablog
 	$file=${DATABASE_URL#file:}
 	if [[ ! -e $file ]]; then
 		mkdir -p ${file%/*}
@@ -290,6 +291,9 @@ src_install() {
 	if [[! -e ${STATIC_DIR} ]]; then
 		mkdir -p ${STATIC_DIR}
 	fi
+
+	# Create log dir
+	mkdir -p /var/log/${PN}
 
 	# Copy static files
 	cp -r "${WORKDIR}/${PN}-${PV}" "${STATIC_DIR}"

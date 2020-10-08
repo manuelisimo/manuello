@@ -287,7 +287,7 @@ src_install() {
 
 	# Copy static files
 	dodir ${STATIC_DIR}
-	cp -r "${WORKDIR}/${PN}-${PV}/static" "${ED}${STATIC_DIR}"
+	cp -r "${WORKDIR}/${PN}-${PV}/static/" "${ED}${STATIC_DIR}"
 
 	# Create log dir
 	keepdir /var/log/${PN}

@@ -296,5 +296,5 @@ src_install() {
 	mkdir -p ${ED}/var/log/${PN}
 
 	# Copy static files
-	cp -r "${WORKDIR}/${PN}-${PV}" "${ED}${STATIC_DIR}"
+	cp -r "${WORKDIR}/${PN}-${PV}/static" "${ED}${STATIC_DIR}"
 }

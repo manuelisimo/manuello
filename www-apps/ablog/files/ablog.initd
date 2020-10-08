@@ -18,6 +18,11 @@ pidfile="/run/${RC_SVCNAME}.pid"
 name="A blog Daemon"
 description="A blog is yet another blog app"
 
+dbfile=${DATABASE_URL#file:}
+if [[ ! -e ${dbfile} ]]; then
+    mkdir -p ${dbfile%/*}
+    touch $dbfile
+fi
 
 ablog_vars=('DATABASE_URL'\
         'HOST_NAME'\

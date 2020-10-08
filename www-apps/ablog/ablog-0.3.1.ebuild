@@ -263,11 +263,8 @@ src_install() {
 	newconfd "${WORKDIR}/${PN}-${PV}/.env.sample" ablog
 	newinitd "${FILESDIR}/ablog.initd" ablog
 
+	# Load default values from env.sample file
 	source "${WORKDIR}/${PN}-${PV}/.env.sample"
-	# Create empty database if it does not exist
-	dbfile=${DATABASE_URL#file:}
-	dodir ${dbfile%/*}
-	touch ${ED}$dbfile
 
 	# Generate a self signed private cert
 	if [[ ! -e ${ED}${TLS_PRIVATE_KEY} ]]; then
@@ -287,9 +284,8 @@ src_install() {
 
 	# Copy static files
 	dodir ${STATIC_DIR}
-	cp -r "${WORKDIR}/${PN}-${PV}/static/" "${ED}${STATIC_DIR}"
+	cp -r ${WORKDIR}/${PN}-${PV}/static/* ${ED}${STATIC_DIR}
 
 	# Create log dir
 	keepdir /var/log/${PN}
-
 }

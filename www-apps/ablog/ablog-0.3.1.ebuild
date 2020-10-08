@@ -265,7 +265,7 @@ src_install() {
 
 	source "${WORKDIR}/${PN}-${PV}/.env.sample"
 	# Create empty database if it does not exist
-	$dbfile=${DATABASE_URL#file:}
+	dbfile=${DATABASE_URL#file:}
 	dodir ${dbfile%/*}
 	touch ${ED}$dbfile
 

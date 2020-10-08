@@ -263,18 +263,16 @@ src_install() {
 	newconfd "${WORKDIR}/${PN}-${PV}/.env.sample" ablog
 	newinitd "${FILESDIR}/ablog.initd" ablog
 
-	# Create empty database if it does not exist
 	source "${WORKDIR}/${PN}-${PV}/.env.sample"
-	$file=${DATABASE_URL#file:}
-	if [[ ! -e $file ]]; then
-		mkdir -p ${file%/*}
-		touch $file
-	fi
+	# Create empty database if it does not exist
+	$dbfile=${DATABASE_URL#file:}
+	dodir ${dbfile%/*}
+	touch ${ED}$dbfile
 
 	# Generate a self signed private cert
 	if [[ ! -e ${ED}${TLS_PRIVATE_KEY} ]]; then
-		mkdir -p ${ED}${TLS_PRIVATE_KEY%/*}
-		mkdir -p ${ED}${TLS_CERTIFICATE%/*}
+		dodir ${TLS_PRIVATE_KEY%/*}
+		dodir ${TLS_CERTIFICATE%/*}
 
 		openssl req \
 			-x509 \
@@ -283,18 +281,15 @@ src_install() {
 			-newkey rsa:2048 \
 			-nodes \
 			-sha256 \
-			-subj '/CN=${HOST_NAME}' \
+			-subj "/CN=${HOST_NAME}" \
 			-extensions EXT -config <( printf "[dn]\nCN=${HOST_NAME}\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:${HOST_NAME}\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 	fi
 
-	# Create static dir if it does not exist
-	if [[! -e ${STATIC_DIR} ]]; then
-		mkdir -p ${STATIC_DIR}
-	fi
+	# Copy static files
+	dodir ${STATIC_DIR}
+	cp -r "${WORKDIR}/${PN}-${PV}/static" "${ED}${STATIC_DIR}"
 
 	# Create log dir
-	mkdir -p ${ED}/var/log/${PN}
+	keepdir /var/log/${PN}
 
-	# Copy static files
-	cp -r "${WORKDIR}/${PN}-${PV}/static" "${ED}${STATIC_DIR}"
 }

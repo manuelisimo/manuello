@@ -18,12 +18,31 @@ pidfile="/run/${RC_SVCNAME}.pid"
 name="A blog Daemon"
 description="A blog is yet another blog app"
 
+# Check if the database file exists
 dbfile=${DATABASE_URL#file:}
 if [[ ! -e ${dbfile} ]]; then
     mkdir -p ${dbfile%/*}
     touch $dbfile
 fi
 
+# Check if the cert exists, and if not, create a self signed one
+# Generate a self signed private cert
+if [[ ! -e ${TLS_PRIVATE_KEY} ]]; then
+    mkdir -p ${TLS_PRIVATE_KEY%/*}
+    mkdir -p ${TLS_CERTIFICATE%/*}
+
+    openssl req \
+        -x509 \
+        -out ${TLS_CERTIFICATE} \
+        -keyout ${TLS_PRIVATE_KEY} \
+        -newkey rsa:2048 \
+        -nodes \
+        -sha256 \
+        -subj "/CN=${HOST_NAME}" \
+        -extensions EXT -config <( printf "[dn]\nCN=${HOST_NAME}\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:${HOST_NAME}\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+fi
+
+# Export config variables from /etc/conf.d/ablog
 ablog_vars=('DATABASE_URL'\
         'HOST_NAME'\
         'RUST_LOG'\
@@ -37,4 +56,5 @@ do
     eval export $i=\$${i}
 done
 
+# This is always on initd files, I don't know what it does lol
 export TMPDIR="${TMPDIR:-/tmp}"

@@ -246,15 +246,17 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm64"
 IUSE=""
 
-BDEPEND="dev-libs/openssl"
+BDEPEND="
+	dev-lang/rust
+"
 
 DEPEND="
-	dev-lang/rust
 	dev-db/sqlite
 "
 
 RDEPEND="
 	${DEPEND}
+	dev-libs/openssl
 	games-misc/fortune-mod
 "
 
@@ -265,22 +267,6 @@ src_install() {
 
 	# Load default values from env.sample file
 	source "${WORKDIR}/${PN}-${PV}/.env.sample"
-
-	# Generate a self signed private cert
-	if [[ ! -e ${ED}${TLS_PRIVATE_KEY} ]]; then
-		dodir ${TLS_PRIVATE_KEY%/*}
-		dodir ${TLS_CERTIFICATE%/*}
-
-		openssl req \
-			-x509 \
-			-out ${ED}${TLS_CERTIFICATE} \
-			-keyout ${ED}${TLS_PRIVATE_KEY} \
-			-newkey rsa:2048 \
-			-nodes \
-			-sha256 \
-			-subj "/CN=${HOST_NAME}" \
-			-extensions EXT -config <( printf "[dn]\nCN=${HOST_NAME}\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:${HOST_NAME}\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
-	fi
 
 	# Copy static files
 	dodir ${STATIC_DIR}

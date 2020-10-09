@@ -34,7 +34,7 @@ if [[ ! -e ${TLS_PRIVATE_KEY} ]]; then
     openssl req -x509 -out ${TLS_CERTIFICATE} -keyout ${TLS_PRIVATE_KEY} \
         -newkey rsa:2048 -nodes -sha256 \
         -subj '/CN=${DOMAIN_NAME}'
-ffi
+fi
 
 # Export config variables from /etc/conf.d/ablog
 ablog_vars=('DATABASE_URL'\

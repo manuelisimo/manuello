@@ -31,20 +31,15 @@ if [[ ! -e ${TLS_PRIVATE_KEY} ]]; then
     mkdir -p ${TLS_PRIVATE_KEY%/*}
     mkdir -p ${TLS_CERTIFICATE%/*}
 
-    openssl req \
-        -x509 \
-        -out ${TLS_CERTIFICATE} \
-        -keyout ${TLS_PRIVATE_KEY} \
-        -newkey rsa:2048 \
-        -nodes \
-        -sha256 \
-        -subj "/CN=${HOST_NAME}" \
-        -extensions EXT -config <( printf "[dn]\nCN=${HOST_NAME}\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:${HOST_NAME}\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
-fi
+    openssl req -x509 -out ${TLS_CERTIFICATE} -keyout ${TLS_PRIVATE_KEY} \
+        -newkey rsa:2048 -nodes -sha256 \
+        -subj '/CN=${DOMAIN_NAME}'
+ffi
 
 # Export config variables from /etc/conf.d/ablog
 ablog_vars=('DATABASE_URL'\
         'HOST_NAME'\
+        'FORTUNE'\
         'RUST_LOG'\
         'STATIC_PATH'\
         'STATIC_DIR'\

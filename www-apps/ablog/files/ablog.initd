@@ -40,6 +40,10 @@ fi
 ablog_vars=('DATABASE_URL'\
         'HOST_NAME'\
         'FORTUNE'\
+        'GA_ID'\
+        'MY_NAME'\
+        'MY_TWITTER'\
+        'MY_GITHUB'\
         'RUST_LOG'\
         'STATIC_PATH'\
         'STATIC_DIR'\

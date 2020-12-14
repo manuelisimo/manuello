@@ -231,16 +231,13 @@ ws2_32-sys-0.2.1
 yaml-rust-0.4.4
 "
 
-inherit cargo
+inherit cargo git-r3
 
 DESCRIPTION="ablog"
-# Double check the homepage as the cargo_metadata crate
-# does not provide this value so instead repository is used
 HOMEPAGE="https://manuel.codes"
-SRC_URI="https://github.com/manuelisimo/ablog/archive/master.zip $(cargo_crate_uris ${CRATES})"
+EGIT_REPO_URI="https://github.com/manuelisimo/${PN}.git"
+SRC_URI="$(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
-# License set may be more restrictive as OR is not respected
-# use cargo-license for a more accurate license picture
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"

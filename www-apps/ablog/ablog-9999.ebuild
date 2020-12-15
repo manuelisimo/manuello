@@ -231,7 +231,7 @@ ws2_32-sys-0.2.1
 yaml-rust-0.4.4
 "
 
-inherit cargo git-r3
+inherit git-r3 cargo
 
 DESCRIPTION="ablog"
 HOMEPAGE="https://manuel.codes"
@@ -256,6 +256,11 @@ RDEPEND="
 	dev-libs/openssl
 	games-misc/fortune-mod
 "
+
+src_unpack() {
+	git-r3_src_unpack
+	cargo_src_unpack
+}
 
 src_install() {
 	cargo_src_install

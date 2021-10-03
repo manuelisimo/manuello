@@ -19,4 +19,4 @@ SLOT="0"
 RDEPEND="app-misc/jq
 	net-dns/bind-tools
 	sys-apps/iproute2
-	dev-python/awscli"
+	app-admin/awscli"

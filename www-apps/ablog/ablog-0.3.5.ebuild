@@ -247,7 +247,7 @@ KEYWORDS="~amd64 ~arm64"
 IUSE=""
 
 BDEPEND="
-	dev-lang/rust
+	dev-lang/rust-bin
 "
 
 DEPEND="

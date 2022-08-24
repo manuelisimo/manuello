@@ -15,7 +15,6 @@ KEYWORDS="~amd64 ~x86 ~arm64 ~arm"
 
 if [[ ${PV} != 9999 ]]; then
         EGIT_COMMIT="tags/${PV}"
-        #EGIT_COMMIT="f9648e8f634e12161caac00e7d7e63a16c7ccdc4"
 else
         KEYWORDS=""
 fi
@@ -42,20 +41,19 @@ BDEPEND="
 
 RESTRICT="test"
 
-#PATCHES=( "${FILESDIR}/${PN}-0.94.0-removeldconfig.patch" )
 
 DOCS=( README )
 
-src_configure() {
-	local mycmakeargs=(
-		-Denable-docs=$(usex doc ON OFF)
-		-Denable-dbus-activation=$(usex dbus ON OFF)
-		-Denable-wayland-gtk=$(usex gtk ON OFF)
-		-Denable-tests=$(usex test ON OFF)
-	)
-	use doc && mycmakeargs+=(
-		-DDOC_INSTALL_DIR="share/doc/${P}"
-	)
-
-	cmake-utils_src_configure
-}
+#src_configure() {
+#	local mycmakeargs=(
+#		-Denable-docs=$(usex doc ON OFF)
+#		-Denable-dbus-activation=$(usex dbus ON OFF)
+#		-Denable-wayland-gtk=$(usex gtk ON OFF)
+#		-Denable-tests=$(usex test ON OFF)
+#	)
+#	use doc && mycmakeargs+=(
+#		-DDOC_INSTALL_DIR="share/doc/${P}"
+#	)
+#
+#	cmake-utils_src_configure
+#}

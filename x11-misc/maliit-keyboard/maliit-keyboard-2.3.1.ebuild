@@ -42,20 +42,20 @@ BDEPEND="app-doc/doxygen
 
 #PATCHES="${FILESDIR}/0001-Add-0001-Bring-back-LanguagePluginInterface.patch"
 
-src_prepare() {
-	cmake-utils_src_prepare
-}
+#src_prepare() {
+#	cmake-utils_src_prepare
+#}
 
-src_configure() {
-	# code is not C++17 ready
-	append-cxxflags -std=c++14
-
-	local mycmakeargs=(
-		-Denable-tests=$(usex test ON OFF)
-	)
-
-	cmake-utils_src_configure
-}
+#src_configure() {
+#	# code is not C++17 ready
+#	append-cxxflags -std=c++14
+#
+#	local mycmakeargs=(
+#		-Denable-tests=$(usex test ON OFF)
+#	)
+#
+#	cmake-utils_src_configure
+#}
 
 pkg_postinst() {
 	xdg_pkg_postinst

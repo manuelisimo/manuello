@@ -42,7 +42,7 @@ BDEPEND="
 RESTRICT="test"
 
 
-# DOCS=( README )
+DOCS=( )
 
 #src_configure() {
 #	local mycmakeargs=(

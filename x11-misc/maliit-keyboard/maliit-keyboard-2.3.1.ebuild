@@ -10,7 +10,7 @@ HOMEPAGE="https://maliit.github.io/"
 SRC_URI="https://github.com/${PN/-/\/}/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="BSD GPL-3 LGPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm64"
 
 IUSE="anthy chewing hunspell pinyin presage"
 
